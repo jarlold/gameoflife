@@ -12,8 +12,6 @@ using namespace std;
 #define PAN_SPEED 0.05f
 #define ZOOM_LEVEL 1.25f
 
-#define LIFE_SIMULATOR HighLifeSimulator
-
 // How big each cell should be
 float point_size = 1.0f;
 
