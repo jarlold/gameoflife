@@ -12,10 +12,12 @@ using namespace std;
 #define PAN_SPEED 0.05f
 #define ZOOM_LEVEL 1.25f
 
+#define LIFE_SIMULATOR HighLifeSimulator
+
 // How big each cell should be
 float point_size = 1.0f;
 
-LifeSimulator* sim;
+LifeLikeSimulator* sim;
 
 void draw_grid(int grid[GRID_SIZE][GRID_SIZE]) {
 	glPushMatrix();
@@ -66,12 +68,27 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 int main(int argc, char **argv) {
-	sim = new LifeSimulator();
+
 
 	glutInit(&argc, argv);  
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);  
-	glutCreateWindow("Life!");  
+
+	// Let the user select between High Life and the original
+	// We'll do it down here so we can change the window title to the ruleset
+	if (argc <= 1 || *argv[1] == 'o') {
+		sim = new LifeSimulator();
+		glutCreateWindow("John Conway's Game of Life");  
+	} else if (*argv[1] == 'h') {
+		sim = new HighLifeSimulator();
+		cout << "Using alternative ruleset: High Life\n";
+		glutCreateWindow("Nathan Thompson's High Life");  
+	} else {
+		cout << "You didn't enter a valid ruleset character. Valid rule characters are:\n o -> for the original game\n h -> for high life.\n";
+		exit(-1);
+	}
+
+
 	glutDisplayFunc(display);  
 	glutIdleFunc(display);
 	glutKeyboardFunc(keyboard);
