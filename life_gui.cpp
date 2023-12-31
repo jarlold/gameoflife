@@ -65,11 +65,12 @@ void keyboard(unsigned char key, int x, int y) {
 
 	// Continue runnig the simulation
 	if (key == ' ') sim->update_grid();
+
+	display();
 }
 
 int main(int argc, char **argv) {
-
-
+	// Setup the OpenGL context
 	glutInit(&argc, argv);  
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);  
@@ -81,7 +82,6 @@ int main(int argc, char **argv) {
 		glutCreateWindow("John Conway's Game of Life");  
 	} else if (*argv[1] == 'h') {
 		sim = new HighLifeSimulator();
-		cout << "Using alternative ruleset: High Life\n";
 		glutCreateWindow("Nathan Thompson's High Life");  
 	} else {
 		cout << "You didn't enter a valid ruleset character. Valid rule characters are:\n o -> for the original game\n h -> for high life.\n";
@@ -90,7 +90,9 @@ int main(int argc, char **argv) {
 
 
 	glutDisplayFunc(display);  
-	glutIdleFunc(display);
+
+	// We only need to draw when something happens
+	//glutIdleFunc(display);
 	glutKeyboardFunc(keyboard);
 	glutMainLoop();  
 }
