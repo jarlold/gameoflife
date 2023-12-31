@@ -22,9 +22,9 @@ Compile:
 Currently only supports the original Conway's Game of Life and High Life. To change
 which one you want to run, add `h` as a flag as shown below:
 
-`./a.out` to start the game normally, with some random pattern.
-`./a.out h` to start the game using "high life" ruleset.`
-`./a.out i` also runs the original game.
+- `./a.out` to start the game normally, with some random pattern.
+- `./a.out h` to start the game using "high life" ruleset.`
+- `./a.out i` also runs the original game.
 
 # Optimization
 I'm just storing everything in a big array because it lets me pass a kernel over
