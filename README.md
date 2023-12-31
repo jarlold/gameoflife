@@ -1,3 +1,9 @@
+
+<center> <!-- you will depricate this tag over my cold dead body -->
+	<img src=./gameoflife_cropped.gif></img>
+</center>
+
+
 # What is this?
 An implementation of John Conway's Game of Life in C++ with OpenGL. 
 
