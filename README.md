@@ -20,10 +20,11 @@ Compile:
 
 # Alternative Rule Sets
 Currently only supports the original Conway's Game of Life and High Life. To change
-which one you want to compile, add or remove the "High" on in line 15 of `life_gui.cpp`.
+which one you want to run, add `h` as a flag as shown below:
 
 `./a.out` to start the game normally, with some random pattern.
 `./a.out h` to start the game using "high life" ruleset.`
+`./a.out i` also runs the original game.
 
 # Optimization
 I'm just storing everything in a big array because it lets me pass a kernel over
