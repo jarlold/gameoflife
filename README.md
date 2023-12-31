@@ -9,7 +9,7 @@ Install dependencies:
 `apt install freeglut-dev`
 
 Compile:
-`./compile ./life_gui.cpp`.
+`./compile.sh ./life_gui.cpp`.
 
 
 # Optimization
