@@ -1,10 +1,10 @@
 #include <math.h>
 #include <iostream>
 using namespace std;
-
 #define GRID_SIZE 512
 
-class LifeLikeSimulator {
+
+class SimpleCelluarAutomataSimulator {
 	bool currently_on_a = true;
 	int grid_a[GRID_SIZE][GRID_SIZE];
 	int grid_b[GRID_SIZE][GRID_SIZE];
@@ -86,6 +86,7 @@ class LifeLikeSimulator {
 			for (int j =0; j < GRID_SIZE; j ++) 
 				current_grid[i][j] = random() % 2;
 
+		/*
 		// Concentric circles
 		for (int r = 0; r < 50; r += 10)
 			for (int i = 0; i < 360; i++)
@@ -98,12 +99,28 @@ class LifeLikeSimulator {
 		current_grid[10+1][70-2] = 1;
 		current_grid[10+1][70-1] = 1;
 
+		current_grid[50 - 1][50 -1] = 1;
+		current_grid[50 - 1][50 +1] = 1;
+		current_grid[50 + 1][50 -1] = 1;
+
+		current_grid[50 - 1][50] = 1;
+		current_grid[50][50 -1]  = 1;
+
+		current_grid[52-1][52+1] = 1;
+		current_grid[52+1][52+1] = 1;
+		current_grid[52][52+1] = 1;
+
+		current_grid[52+1][52] = 1;
+		current_grid[52+1][52-1] = 1;
+
+		current_grid[51-1][51+1] = 1;
+		current_grid[51+1][51-1] = 1;
+		*/
 	}
 
 };
 
-class LifeSimulator : public LifeLikeSimulator {
-
+class LifeSimulator : public SimpleCelluarAutomataSimulator {
 	public:
 	int kernel(int neighbors[]) {
 		// Count the number of neighbors
@@ -135,8 +152,7 @@ class LifeSimulator : public LifeLikeSimulator {
 	}
 };
 
-
-class HighLifeSimulator : public LifeLikeSimulator {
+class HighLifeSimulator : public SimpleCelluarAutomataSimulator {
 
 	public:
 	int kernel(int neighbors[]) {
@@ -167,4 +183,67 @@ class HighLifeSimulator : public LifeLikeSimulator {
 	HighLifeSimulator() {
 		this->initialize_grid();
 	}
+};
+
+class WolframRule30Simulator : public SimpleCelluarAutomataSimulator {
+	public:
+	int kernel(int neighbors[]) {
+
+		if (
+			((neighbors[6] == 1) +  ((neighbors[7] == 1) | (neighbors[8]==1) )) % 2
+		) {
+			return 1;
+		} else if (neighbors[4] == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
+
+		// Count the number of neighbors
+	}
+
+	void initialize_grid() {
+		this->current_grid[256][256] = 1;
+	}
+
+	WolframRule30Simulator() { this->initialize_grid(); }
+};
+
+class StochasticLifeSimulator: public SimpleCelluarAutomataSimulator {
+	public:
+	int kernel(int neighbors[]) {
+		// Count the number of neighbors
+		int sum = 0;
+		for (int i = 0; i < 9; i++) if (neighbors[i] == 1) sum++;
+
+		int new_value = 0;
+
+		// We'll let the compiler reduce the boolean algebra here. I'm sure it knows how...
+		// if true then we are dealing with a living cell	
+		if (neighbors[4] == 1) {
+			// Any cell with fewer than 2+1 neighbors dies
+			if (sum < 2+1) new_value = 0;
+
+			// Any cell with 2+1 or 3+1 lives on
+			else if (sum == 2+1 || sum == 3+1 ) new_value =  1;
+
+			// Any cell with more than 3+1 neighbors dies
+			else if (sum > 3+1 ) new_value =  0;
+
+		} else {
+			// Any empty space with 3+0 neighbors becomes a non-empty space
+			new_value = (sum == 3) ? 1 : 0;
+		}
+
+		// 1 in 1000 chance to randomly flip a bit
+    	if (random() % 1000 == 1)
+    		return (new_value == 0 ? 1 : 0);
+
+		return new_value;
+	}
+
+	StochasticLifeSimulator()  {
+		this->initialize_grid();
+	}
+
 };

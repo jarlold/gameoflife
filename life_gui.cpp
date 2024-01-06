@@ -1,6 +1,12 @@
-#include <GL/glut.h> 
+//Standard Lib
 #include <math.h>
 #include <iostream>
+#include <string.h>
+
+//OpenGL
+#include <GL/glut.h> 
+
+// This Project
 #include "life_simulator.cpp"
 using namespace std;
 
@@ -13,9 +19,9 @@ using namespace std;
 #define ZOOM_LEVEL 1.25f
 
 // How big each cell should be
-float point_size = 1.0f;
+float point_size = 5.0f;
 
-LifeLikeSimulator* sim;
+SimpleCelluarAutomataSimulator* sim;
 
 void draw_grid(int grid[GRID_SIZE][GRID_SIZE]) {
 	glPushMatrix();
@@ -67,22 +73,35 @@ void keyboard(unsigned char key, int x, int y) {
 	display();
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
 	// Setup the OpenGL context
 	glutInit(&argc, argv);  
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);  
 
+	if (argc <= 1) {
+		cout << "You didn't specify what simulator to run!\n";
+		exit(-1);
+	}
+
+	string s_arg = argv[1];
+
 	// Let the user select between High Life and the original
 	// We'll do it down here so we can change the window title to the ruleset
-	if (argc <= 1 || *argv[1] == 'o') {
+	if (!strcmp(argv[1], "life")) {
 		sim = new LifeSimulator();
 		glutCreateWindow("John Conway's Game of Life");  
-	} else if (*argv[1] == 'h') {
-		sim = new HighLifeSimulator();
+	} else if (!strcmp(argv[1], "hlife")) {
 		glutCreateWindow("Nathan Thompson's High Life");  
+		sim = new HighLifeSimulator();
+	} else if (!strcmp(argv[1], "slife")) {
+		glutCreateWindow("Stochastic Life");  
+		sim = new StochasticLifeSimulator();
+	} else if (!strcmp(argv[1], "w30")) {
+		glutCreateWindow("Stephen Wolfram's Rule 30");  
+		sim = new WolframRule30Simulator();
 	} else {
-		cout << "You didn't enter a valid ruleset character. Valid rule characters are:\n o -> for the original game\n h -> for high life.\n";
+		cout << "You didn't enter a valid ruleset character.";
 		exit(-1);
 	}
 

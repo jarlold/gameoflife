@@ -5,7 +5,8 @@
 
 
 # What is this?
-An implementation of John Conway's Game of Life in C++ with OpenGL. 
+An implementation of John Conway's Game of Life in C++ with OpenGL. <br>
+EDIT: This sent me down a rabbit hole, and it now contains some other life-like celluar automata.
 
 # Why?
 Train ride was long. It's in C++ instead of C because OpenGL C bindings weren't installed
@@ -19,12 +20,19 @@ Compile:
 `./compile.sh ./life_gui.cpp`.
 
 # Alternative Rule Sets
-Currently only supports the original Conway's Game of Life and High Life. To change
-which one you want to run, add `h` as a flag as shown below:
+I've added a few alternative rules and some other celluar automata, you can select 
+between them as shown below:
 
-- `./a.out` to start the game normally, with some random pattern.
-- `./a.out h` to start the game using "high life" ruleset.`
-- `./a.out o` also runs the original game.
+- `./a.out life` for the original Game of Life
+- `./a.out hlife` for Nathan Thompson's High Life
+- `./a.out slife` for Stochastic Life
+- `./a.out w30` for Wolfram's Rule 30
+<br>
+Not addng any of these will simply run the original Game of Life.
+
+# Controls
+use good ol' `WASD` to move around, and `-`/`=` to zoom in and out. Pressing 
+`space` advances the simulation by one tick, holding `space` works too.
 
 # Optimization
 I'm just storing everything in a big array because it lets me pass a kernel over
